@@ -17,6 +17,8 @@ services:
     build: .
     environment:
       RUNEVERYNMINUTES: 3600
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
 ```
 
 
@@ -34,6 +36,8 @@ services:
     image: wasserball/speedtest-cli
     environment:
       RUNEVERYNMINUTES: 3600
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
 ```
 
 
