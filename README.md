@@ -41,3 +41,12 @@ services:
 ```
 
 
+The Timestamp in the CSV-Logs is in `ISO 8601` (UTC). [GitHub Issue](https://github.com/sivel/speedtest-cli/issues/387)
+
+example Log:
+
+```
+Server ID,Sponsor,Server Name,Timestamp,Distance,Ping,Download,Upload
+3840,ITandTEL,Wels,2017-09-25T21:24:32.337967Z,23.098684767922123,44.107,52541096.986188576,26523836.39776792
+```
+
