@@ -23,13 +23,19 @@ echo "--------------------------------------------------------------------------
 echo ""
 
 # Print CSV Header
-speedtest-cli --csv-header
+header="$(speedtest-cli --csv-header)"
+echo "${header}"
+echo "${header}" >> /data/output.csv
 
 # Run every n seconds
 # log as CSV
 while true
 do 
-    speedtest-cli --csv
+    #speedtest-cli --csv
+
+    output="$(speedtest-cli --csv)"
+	echo "${output}"
+	echo "${output}" >> /data/output.csv
 
     sleep $seconds
 done

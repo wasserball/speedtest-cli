@@ -6,8 +6,10 @@ ENV SPEEDTEST_CLI_VERSION 1.0.6
 
 RUN pip install speedtest-cli==$SPEEDTEST_CLI_VERSION
 
-
+RUN mkdir /data
+COPY output.csv /data/
 COPY entrypoint.sh /
-#ENTRYPOINT ["/entrypoint.sh"]
+
+
 
 CMD bash /entrypoint.sh

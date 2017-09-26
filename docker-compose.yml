@@ -6,3 +6,5 @@ services:
       RUNEVERYNMINUTES: 3600
     volumes:
     - /etc/localtime:/etc/localtime:ro
+    - /data/speedtest:/data
+
