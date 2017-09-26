@@ -7,6 +7,7 @@ Default Vale ist set to 3600 seconds (= 1h) (`entrypoint.sh`)
 
 The speedtest-cli config is set to `--csv`, so it logs all data as csv-string with an `,` as delimiter.
 
+The data is also stored at `/data/output.csv`
 
 example usage:
 
@@ -19,6 +20,7 @@ services:
       RUNEVERYNMINUTES: 3600
     volumes:
     - /etc/localtime:/etc/localtime:ro
+    - /data/speedtest:/data
 ```
 
 
@@ -35,9 +37,7 @@ services:
   speedtest:
     image: wasserball/speedtest-cli
     environment:
-      RUNEVERYNMINUTES: 3600
-    volumes:
-    - /etc/localtime:/etc/localtime:ro
+    ...
 ```
 
 
@@ -50,3 +50,14 @@ Server ID,Sponsor,Server Name,Timestamp,Distance,Ping,Download,Upload
 3840,ITandTEL,Wels,2017-09-25T21:24:32.337967Z,23.098684767922123,44.107,52541096.986188576,26523836.39776792
 ```
 
+## Simple Visualisation
+
+If you open the `result.xlsx` you get an error 
+
+```
+Security Warning: "Data Connections have been disabled".`
+```
+
+Click on `Enable Content`, and select the `/data/output.csv`-File.
+
+![visualisation.png](img/visualisation.png "Speedtest")
