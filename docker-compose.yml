@@ -4,7 +4,7 @@ services:
     build: .
     environment:
       RUNEVERYNMINUTES: 3600
+      TIMEZONE: Europe/Vienna
     volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - /data/speedtest:/data
+    - /data:/data
 

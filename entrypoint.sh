@@ -1,15 +1,29 @@
 #!/bin/sh
 
+rm -rf /tmp/.X1-lock
+
+Xvfb :1 -dpi 72 -deferglyphs all -screen scrn 1920x1080x24 > /dev/null 2>&1 &
+export DISPLAY=:1
+
+echo "--------------------------------------------------------------------------------------------------------"
+echo "Timezone:"
+timezone="Europe/Vienna"
+if [ -n "$TIMEZONE" ]; then
+    timezone=$TIMEZONE
+else
+	    echo "use default timezone: $timezone"
+fi
+echo "$timezone" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
+
+
+echo ""
+echo "------------------------------------- `date` -------------------------------------"
+echo ""
+
 # seconds
 seconds=3600 # every hour --> default value
 
-
-echo ""
-echo "------------------------------------- `date` ------------------------------------"
-echo ""
-
-
-# read env
+# read interval env
 if [ -n "$RUNEVERYNMINUTES" ]; then
     seconds=$RUNEVERYNMINUTES
 else
@@ -25,7 +39,16 @@ echo ""
 # Print CSV Header
 header="$(speedtest-cli --csv-header)"
 echo "${header}"
-echo "${header}" >> /data/output.csv
+
+# add header to .csv file
+numberOfLines=$(cat /data/output.csv | wc -l)
+if [ "$numberOfLines" -eq "0" ]; then
+      echo "$numberOfLines"
+      echo "${header}" >> /data/output.csv
+fi
+
+
+#echo "${header}" >> /data/output.csv
 
 # Run every n seconds
 # log as CSV
@@ -36,6 +59,11 @@ do
     output="$(speedtest-cli --csv)"
 	echo "${output}"
 	echo "${output}" >> /data/output.csv
+
+	echo "--------------------------------------------------------------------------------------------------------"
+	echo "update plot"
+	python /plot.py
+	echo "done :-)"
 
     sleep $seconds
 done

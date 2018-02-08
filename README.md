@@ -5,6 +5,8 @@ This Docker-Image runs the [speedtest-cli](https://github.com/sivel/speedtest-cl
 
 Default Vale ist set to 3600 seconds (= 1h) (`entrypoint.sh`)
 
+Default Timezone is `Europe/Vienna` and can be overwritten with env variable `TIMEZONE` [List of timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+
 The speedtest-cli config is set to `--csv`, so it logs all data as csv-string with an `,` as delimiter.
 
 The data is also stored at `/data/output.csv`
@@ -18,14 +20,10 @@ services:
     build: .
     environment:
       RUNEVERYNMINUTES: 3600
+      TIMEZONE: Europe/Berlin
     volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - /data/speedtest:/data
+    - /data:/data
 ```
-
-
-
-
 ---
 
 
@@ -50,14 +48,7 @@ Server ID,Sponsor,Server Name,Timestamp,Distance,Ping,Download,Upload
 3840,ITandTEL,Wels,2017-09-25T21:24:32.337967Z,23.098684767922123,44.107,52541096.986188576,26523836.39776792
 ```
 
-## Simple Visualisation
+##Visualisation
+After every Speedtest, a PDF is created witch you can find under  `/data/result.pdf`
 
-If you open the `result.xlsx` you get an error 
-
-```
-Security Warning: "Data Connections have been disabled".`
-```
-
-Click on `Enable Content`, and select the `/data/output.csv`-File.
-
-![visualisation.png](img/visualisation.png "Speedtest")
+![visualisation.png](img/result.png "Speedtest")
