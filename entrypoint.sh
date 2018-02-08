@@ -9,12 +9,11 @@ echo "--------------------------------------------------------------------------
 echo "Timezone:"
 timezone="Europe/Vienna"
 if [ -n "$TIMEZONE" ]; then
-    timezone=$TIMEZONE
+  timezone=$TIMEZONE
 else
 	    echo "use default timezone: $timezone"
 fi
 echo "$timezone" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
-
 
 echo ""
 echo "------------------------------------- `date` -------------------------------------"
@@ -25,9 +24,9 @@ seconds=3600 # every hour --> default value
 
 # read interval env
 if [ -n "$RUNEVERYNMINUTES" ]; then
-    seconds=$RUNEVERYNMINUTES
+  seconds=$RUNEVERYNMINUTES
 else
-    echo "env 'RUNEVERYNMINUTES' not set --> using default value: $seconds"
+  echo "env 'RUNEVERYNMINUTES' not set --> using default value: $seconds"
 fi
 
 echo "intervall set to $seconds seconds"
@@ -43,29 +42,24 @@ echo "${header}"
 # add header to .csv file
 numberOfLines=$(cat /data/output.csv | wc -l)
 if [ "$numberOfLines" -eq "0" ]; then
-      echo "$numberOfLines"
-      echo "${header}" >> /data/output.csv
+  echo "$numberOfLines"
+  echo "${header}" >> /data/output.csv
 fi
-
-
-#echo "${header}" >> /data/output.csv
 
 # Run every n seconds
 # log as CSV
 while true
 do 
-    #speedtest-cli --csv
+  #speedtest-cli --csv
+  output="$(speedtest-cli --csv)"
+  echo "${output}"
+  echo "${output}" >> /data/output.csv
 
-    output="$(speedtest-cli --csv)"
-	echo "${output}"
-	echo "${output}" >> /data/output.csv
-
-	echo "--------------------------------------------------------------------------------------------------------"
-	echo "update plot"
-	python /plot.py
-	echo "done :-)"
-
-    sleep $seconds
+  echo "--------------------------------------------------------------------------------------------------------"
+  echo "update plot"
+  python /plot.py
+  echo "done :-)"
+  sleep $seconds
 done
 
 

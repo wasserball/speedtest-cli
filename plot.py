@@ -21,8 +21,8 @@ with open('/data/output.csv','r') as csvfile:
         x.append(int(seconds))
         #x.append(int(idx))
         xlabels.append(currentDate.strftime('%d-%m-%Y_%H:%M'))
-        download.append(float(row[6])/1024/1024)
-        upload.append(float(row[7])/1024/1024)
+        download.append(float(row[6])/1000/1000)
+        upload.append(float(row[7])/1000/1000)
 
 fig = plt.figure(figsize=(20,10))
 
