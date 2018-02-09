@@ -59,13 +59,22 @@ while true
 do 
   #speedtest-cli --csv
   output="$(speedtest-cli --csv)"
-  echo "${output}"
+  #echo "${output}"
   # if there is a cli error, the output is "", so do not append it to the csv
   lengthOfString=${#output}
   # echo "lengthOfString: ${lengthOfString}"
 
-  if [ "$lengthOfString" -gt "1" ]; then   
-    echo "${output}" >> $csvFile
+  if [ "$lengthOfString" -gt "1" ]; then 
+    # get ISO8601 string from output 
+    ISO8601="$(cut -d',' -f4 <<<"$output")"
+    # echo "${ISO8601}"
+    # local time
+    now=`date +%Y-%m-%dT%H:%M:%S`    
+    # replace in string
+    outputWithLocaltime="${output/${ISO8601}/$now}"
+    echo "${outputWithLocaltime}"
+
+    echo "${outputWithLocaltime}" >> $csvFile
     echo "--------------------------------------------------------------------------------------------------------"
     echo "update plot"
     python /plot.py
