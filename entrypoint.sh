@@ -39,10 +39,17 @@ echo ""
 header="$(speedtest-cli --csv-header)"
 echo "${header}"
 
+# the to store the data
+csvFile="/data/output.csv"
+
+# Remove blank lines in csv (fix /plot.py error index out of range)
+sed '/^$/d' $csvFile > $csvFile.out 
+mv  $csvFile.out $csvFile
+
 # add header to .csv file
-numberOfLines=$(cat /data/output.csv | wc -l)
+numberOfLines=$(cat $csvFile | wc -l)
 if [ "$numberOfLines" -eq "0" ]; then
-  echo "$numberOfLines"
+  #echo "$numberOfLines"
   echo "${header}" >> /data/output.csv
 fi
 
@@ -53,12 +60,18 @@ do
   #speedtest-cli --csv
   output="$(speedtest-cli --csv)"
   echo "${output}"
-  echo "${output}" >> /data/output.csv
+  # if there is a cli error, the output is "", so do not append it to the csv
+  lengthOfString=${#output}
+  # echo "lengthOfString: ${lengthOfString}"
 
-  echo "--------------------------------------------------------------------------------------------------------"
-  echo "update plot"
-  python /plot.py
-  echo "done :-)"
+  if [ "$lengthOfString" -gt "1" ]; then   
+    echo "${output}" >> $csvFile
+    echo "--------------------------------------------------------------------------------------------------------"
+    echo "update plot"
+    python /plot.py
+    echo "done :-)"
+  fi
+
   sleep $seconds
 done
 
