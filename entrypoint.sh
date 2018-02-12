@@ -76,9 +76,7 @@ do
 
     echo "${outputWithLocaltime}" >> $csvFile
     echo "--------------------------------------------------------------------------------------------------------"
-    echo "update plot"
     python /plot.py
-    echo "done :-)"
   fi
 
   sleep $seconds

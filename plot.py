@@ -12,6 +12,7 @@ download = []
 upload = []
 xlabels = []
 
+counter = 0
 with open('/data/output.csv','r') as csvfile:
     plots = csv.reader(csvfile, delimiter=',')
     next(plots, None) # skip the headers
@@ -23,8 +24,9 @@ with open('/data/output.csv','r') as csvfile:
         xlabels.append(currentDate.strftime('%d-%m-%Y_%H:%M'))
         download.append(float(row[6])/1000/1000)
         upload.append(float(row[7])/1000/1000)
+        counter += 1
 
-fig = plt.figure(figsize=(20,10))
+fig = plt.figure(figsize=(int(counter/2),10))
 
 ax = fig.add_subplot(111)
 ax.grid('on')
@@ -44,7 +46,7 @@ plt.plot(x,upload, label='Upload')
 plt.xticks(x, xlabels, rotation=70)
 
 
-plt.margins(0.1)
+plt.margins(0.015)
 plt.subplots_adjust(bottom=0.25)
 
 plt.xlabel('Timestamp d-m-Y_H:M')
