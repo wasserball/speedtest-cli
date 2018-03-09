@@ -16,7 +16,6 @@ RUN apt-get update &&\
 
 
 RUN mkdir /data
-COPY output.csv /data/
 COPY entrypoint.sh /
 COPY plot.py /
 

@@ -13,7 +13,8 @@ upload = []
 xlabels = []
 
 counter = 0
-with open('/data/output.csv','r') as csvfile:
+DATE = datetime.date.today().strftime("%Y-%m")
+with open('/data/' + DATE + '.csv','r') as csvfile:
     plots = csv.reader(csvfile, delimiter=',')
     next(plots, None) # skip the headers
     for idx, row in enumerate(plots):
@@ -26,10 +27,17 @@ with open('/data/output.csv','r') as csvfile:
         upload.append(float(row[7])/1000/1000)
         counter += 1
 
-fig = plt.figure(figsize=(int(counter/2),10))
+
+figSize = int(counter/2)
+
+# set min size of plot
+if figSize < 6:
+    figSize = 6
+
+fig = plt.figure(figsize=(figSize,10))
 
 ax = fig.add_subplot(111)
-ax.grid('on')
+ax.grid(True)
 
 plt.plot(x,download, label='Download')
 plt.xticks(x, xlabels, rotation=70)
@@ -51,10 +59,10 @@ plt.subplots_adjust(bottom=0.25)
 
 plt.xlabel('Timestamp d-m-Y_H:M')
 plt.ylabel('Mbit/s')
-plt.title('Speedtest')
+plt.title('Speedtest - ' + DATE)
 plt.legend()
 
 #plt.show()
-plt.savefig('/data/result.pdf')
+plt.savefig('/data/' + DATE + '.pdf')
 
 

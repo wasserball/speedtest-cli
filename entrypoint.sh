@@ -40,18 +40,19 @@ header="$(speedtest-cli --csv-header)"
 echo "${header}"
 
 # the to store the data
-csvFile="/data/output.csv"
+DATE=`date +%Y-%m`
+csvFile="/data/${DATE}.csv"
+
+# create file if it does not exist and add header
+if [ ! -f ${csvFile} ]; then
+  # echo "create file: " + ${csvFile}
+  # add header to .csv file
+  echo "${header}" >> $csvFile
+fi
 
 # Remove blank lines in csv (fix /plot.py error index out of range)
 sed '/^$/d' $csvFile > $csvFile.out 
 mv  $csvFile.out $csvFile
-
-# add header to .csv file
-numberOfLines=$(cat $csvFile | wc -l)
-if [ "$numberOfLines" -eq "0" ]; then
-  #echo "$numberOfLines"
-  echo "${header}" >> /data/output.csv
-fi
 
 # Run every n seconds
 # log as CSV
