@@ -62,7 +62,7 @@ mv  $csvFile.out $csvFile
 while true
 do 
   #speedtest-cli --csv
-  output="$(speedtest-cli --csv)"
+  output="$(speedtest-cli --timeout 30 --csv)"
   # echo "${output}"
   # if there is a cli error, the output is "", so do not append it to the csv
   lengthOfString=${#output}
