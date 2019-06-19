@@ -10,10 +10,13 @@ echo "Timezone:"
 timezone="Europe/Vienna"
 if [ -n "$TIMEZONE" ]; then
   timezone=$TIMEZONE
+        echo "$TIMEZONE"
+
 else
-	    echo "use default timezone: $timezone"
+	    echo "use default timezone: $TIMEZONE"
 fi
-echo "$timezone" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
+
+ln -sf "/usr/share/zoneinfo/$TIMEZONE"  /etc/localtime
 
 echo ""
 echo "------------------------------------- `date` -------------------------------------"
@@ -60,7 +63,7 @@ while true
 do 
   #speedtest-cli --csv
   output="$(speedtest-cli --csv)"
-  #echo "${output}"
+  # echo "${output}"
   # if there is a cli error, the output is "", so do not append it to the csv
   lengthOfString=${#output}
   # echo "lengthOfString: ${lengthOfString}"

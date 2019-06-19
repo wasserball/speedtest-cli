@@ -6,5 +6,5 @@ services:
       RUNEVERYNMINUTES: 3600
       TIMEZONE: Europe/Vienna
     volumes:
-    - /data:/data
+    - ./data:/data
 
