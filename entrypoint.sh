@@ -38,6 +38,12 @@ echo ""
 echo "--------------------------------------------------------------------------------------------------------"
 echo ""
 
+speedtestversion="$(speedtest-cli --version)"
+echo "${speedtestversion}"
+echo ""
+echo "--------------------------------------------------------------------------------------------------------"
+echo ""
+
 # Print CSV Header
 header="$(speedtest-cli --csv-header)"
 echo "${header}"
@@ -62,7 +68,7 @@ mv  $csvFile.out $csvFile
 while true
 do 
   #speedtest-cli --csv
-  output="$(speedtest-cli --timeout 30 --csv)"
+  output="$(speedtest-cli --timeout 60 --single --secure --no-pre-allocate --csv)"
   # echo "${output}"
   # if there is a cli error, the output is "", so do not append it to the csv
   lengthOfString=${#output}
