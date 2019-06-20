@@ -64,10 +64,10 @@ sed '/^$/d' $csvFile > $csvFile.out
 mv  $csvFile.out $csvFile
 
 # Run every n seconds
-# log as CSV
-while true
-do 
-  #speedtest-cli --csv
+
+speedtest()
+{
+    #speedtest-cli --csv
   output="$(speedtest-cli --timeout 60 --single --secure --no-pre-allocate --csv)"
   # echo "${output}"
   # if there is a cli error, the output is "", so do not append it to the csv
@@ -75,21 +75,55 @@ do
   # echo "lengthOfString: ${lengthOfString}"
 
   if [ "$lengthOfString" -gt "1" ]; then 
-    # get ISO8601 string from output 
-    ISO8601="$(cut -d',' -f4 <<<"$output")"
-    # echo "${ISO8601}"
-    # local time
-    now=`date +%Y-%m-%dT%H:%M:%S`    
-    # replace in string
-    outputWithLocaltime="${output/${ISO8601}/$now}"
-    echo "${outputWithLocaltime}"
 
-    echo "${outputWithLocaltime}" >> $csvFile
-    echo "--------------------------------------------------------------------------------------------------------"
-    python /plot.py
+    down="$(cut -d',' -f7 <<<"$output")"
+    up="$(cut -d',' -f8 <<<"$output")"
+
+    retry=false
+    if test "$down" = "0.0"
+    then
+        echo "Download error --> retry!"
+        retry=true
+    fi
+    
+    if test "$up" = "0.0"
+    then
+        echo "Upload error --> retry!"
+        retry=true
+    fi
+    
+
+    if [ $retry == true ]
+    then
+       echo "     down: ${down}"
+       echo "     up: ${up}"
+       echo "..."
+       speedtest
+    else
+      # get ISO8601 string from output 
+      ISO8601="$(cut -d',' -f4 <<<"$output")"
+      # echo "${ISO8601}"
+      # local time
+      now=`date +%Y-%m-%dT%H:%M:%S`    
+      # replace in string
+      outputWithLocaltime="${output/${ISO8601}/$now}"
+      echo "${outputWithLocaltime}"
+
+      echo "${outputWithLocaltime}" >> $csvFile
+      echo "--------------------------------------------------------------------------------------------------------"
+      python /plot.py
+    fi
+    
   fi
+}
+
+# run test
+while true
+do 
+  speedtest
 
   sleep $seconds
 done
+
 
 
