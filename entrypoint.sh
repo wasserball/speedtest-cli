@@ -68,7 +68,7 @@ mv  $csvFile.out $csvFile
 speedtest()
 {
     #speedtest-cli --csv
-  output="$(speedtest-cli --timeout 60 --single --secure --no-pre-allocate --csv)"
+  output="$(speedtest-cli --timeout 60 --secure --csv)"
   # echo "${output}"
   # if there is a cli error, the output is "", so do not append it to the csv
   lengthOfString=${#output}
